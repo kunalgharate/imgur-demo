@@ -1,29 +1,29 @@
 package com.example.mvvmkotlinexample.view
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmkotlinexample.R
-import com.example.mvvmkotlinexample.model.ServicesSetterGetter
-import com.example.mvvmkotlinexample.repository.MainActivityRepository
-import com.example.mvvmkotlinexample.retrofit.RetrofitClient
+import com.example.mvvmkotlinexample.adapters.RecyclerViewAdapter
 import com.example.mvvmkotlinexample.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var context: Context
 
     lateinit var mainActivityViewModel: MainActivityViewModel
+    private var adapter: RecyclerViewAdapter? = null
+    private var isLinear = true
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,21 +33,36 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-        btnClick.setOnClickListener {
+        val linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = linearLayoutManager
 
-            wp7progressBar.showProgressBar()
+        buttonSwitchLayout.setOnClickListener {
 
             mainActivityViewModel.getUser()!!.observe(this, Observer { serviceSetterGetter ->
 
-                wp7progressBar.hideProgressBar()
+                if (isLinear) {
+                    // Switch to grid layout
+                    val gridLayoutManager = GridLayoutManager(this@MainActivity, 2)
+                    recyclerView.layoutManager = gridLayoutManager
+                } else {
+                    // Switch to linear layout
+                    val linearLayoutManager = LinearLayoutManager(this@MainActivity)
+                    recyclerView.layoutManager = linearLayoutManager
+                }
 
-                val msg = serviceSetterGetter.message
+                adapter = RecyclerViewAdapter(this,serviceSetterGetter.data,isLinear)
+                recyclerView.adapter = adapter
 
-                lblResponse.text = msg
+                adapter?.notifyDataSetChanged()
+
+                isLinear = !isLinear
 
             })
 
         }
 
     }
+
 }
+
+

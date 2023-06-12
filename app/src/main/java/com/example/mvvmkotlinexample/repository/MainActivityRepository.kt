@@ -1,11 +1,8 @@
 package com.example.mvvmkotlinexample.repository
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mvvmkotlinexample.model.ServicesSetterGetter
+import com.example.mvvmkotlinexample.model.ImgurImageDto
 import com.example.mvvmkotlinexample.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,30 +10,27 @@ import retrofit2.Response
 
 object MainActivityRepository {
 
-    val serviceSetterGetter = MutableLiveData<ServicesSetterGetter>()
+    val serviceSetterGetter = MutableLiveData<ImgurImageDto>()
 
-    fun getServicesApiCall(): MutableLiveData<ServicesSetterGetter> {
+    fun getServicesApiCall(): MutableLiveData<ImgurImageDto> {
 
         val call = RetrofitClient.apiInterface.getServices()
 
-        call.enqueue(object: Callback<ServicesSetterGetter> {
-            override fun onFailure(call: Call<ServicesSetterGetter>, t: Throwable) {
+        call.enqueue(object: Callback<ImgurImageDto> {
+            override fun onFailure(call: Call<ImgurImageDto>, t: Throwable) {
                 // TODO("Not yet implemented")
                 Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
-                call: Call<ServicesSetterGetter>,
-                response: Response<ServicesSetterGetter>
+                call: Call<ImgurImageDto>,
+                response: Response<ImgurImageDto>
             ) {
                 // TODO("Not yet implemented")
                 Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
-
-                val msg = data!!.message
-
-                serviceSetterGetter.value = ServicesSetterGetter(msg)
+                serviceSetterGetter.value = data
             }
         })
 

@@ -3,16 +3,19 @@ package com.example.mvvmkotlinexample.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mvvmkotlinexample.model.ServicesSetterGetter
+import com.example.mvvmkotlinexample.model.ImgurImageDto
 import com.example.mvvmkotlinexample.repository.MainActivityRepository
 
 class MainActivityViewModel : ViewModel() {
 
-    var servicesLiveData: MutableLiveData<ServicesSetterGetter>? = null
+    var servicesLiveData: MutableLiveData<ImgurImageDto>? = null
 
-    fun getUser() : LiveData<ServicesSetterGetter>? {
+
+    fun getUser() : LiveData<ImgurImageDto>? {
         servicesLiveData = MainActivityRepository.getServicesApiCall()
         return servicesLiveData
     }
 
 }
+
+
