@@ -59,7 +59,7 @@ data class ImgurImageDto(
         @SerializedName("tags")
         val tags: List<Any>,
         @SerializedName("title")
-        val title: Any, // null
+        val title: String, // null
         @SerializedName("type")
         val type: String, // image/jpeg
         @SerializedName("views")

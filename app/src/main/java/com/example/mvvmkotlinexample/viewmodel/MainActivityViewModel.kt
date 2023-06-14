@@ -8,8 +8,7 @@ import com.example.mvvmkotlinexample.repository.MainActivityRepository
 
 class MainActivityViewModel : ViewModel() {
 
-    var servicesLiveData: MutableLiveData<ImgurImageDto>? = null
-
+    var servicesLiveData: MutableLiveData<ImgurImageDto> = MutableLiveData()
 
     fun getUser() : LiveData<ImgurImageDto>? {
         servicesLiveData = MainActivityRepository.getServicesApiCall()
